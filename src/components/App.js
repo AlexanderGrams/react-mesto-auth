@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Header from "./Header/Header"
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer"
@@ -11,6 +12,8 @@ import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import {CurrentCardContext} from '../contexts/CurrentCardContext';
 import loading from "../images/loading.gif";
 import DeleteCardQuestionPopup from './DeleteCardQuestionPopup/DeleteCardQuestionPopup';
+import Register from "./Register/Register"
+import Login from "./Login/Login"
 
 function App() {
   //состояние попапа аватара
@@ -158,13 +161,20 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <CurrentCardContext.Provider value={currentCards}>
           <Header />
-          {loadingBoolean ?
+          <Routes>
+            <Route path="/" element={
+              <Main onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
+            }/>
+            <Route path="/sign-up" element={<Register />}/>
+            <Route path="/sign-in" element={<Login />}/>
+          </Routes>
+          {/* {loadingBoolean ?
             <Main onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
             :
             <div className='loading-data'>
               <img className='loading-data__img' src={loading} alt='анимация загрузки'/>
             </div>
-          }
+          } */}
           <Footer />
           <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
           <AddPlacePopup onAddCrad={handleAddCrad} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
