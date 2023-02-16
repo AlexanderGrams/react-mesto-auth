@@ -1,8 +1,35 @@
+import LoginAndRegisterForm from "../LoginAndRegisterForm/LoginAndRegisterForm";
+import { useFormAndValidation } from "../../hooks/useFormAndValidation";
+
 function Login() {
+
+  const {values, handleChange, errors, isValid} = useFormAndValidation()
+
+  function handleSubmit(e, setButtonLoading) {
+    e.preventDefault();
+
+    // // Передаём значения управляемых компонентов во внешний обработчик
+    // onUpdateUser({
+    //   nameUser: values.nameUser,
+    //   activity: values.activity,
+    //   resetForm: resetForm,
+    // }, setButtonLoading);
+  }
+
   return (
-    <section>
-      <h1>Login!</h1>
-    </section>
+    <main className="main">
+      <section className="authorization">
+        <h1 className="authorization__title">Вход</h1>
+        <LoginAndRegisterForm isValid={!isValid} name={'register'} onSubmit={handleSubmit} buttonText="Зарегистрироваться">
+          <fieldset className="authorization__inputs">
+            <input id="name-emailUser" className={errors.emailUser ? "authorization__item authorization__item_tupe_error" : "authorization__item"} type="email" name="emailUser" required minLength="2" maxLength="40" placeholder="Email" value={values.emailUser || ''} onChange={handleChange} autocomplete = "new-email"/>
+            <span id="name-emailUser-error" className="authorization__text-error">{errors.emailUser}</span>
+            <input id="name-password" className={errors.password ? "authorization__item authorization__item_tupe_error" : "authorization__item"} type="password" name="password" required minLength="2" maxLength="200" placeholder="Пароль" value={values.password || ''} onChange={handleChange} autocomplete = "new-password"/>
+            <span id="name-password-error" className="authorization__text-error">{errors.password}</span>
+          </fieldset>
+        </LoginAndRegisterForm>
+      </section>
+    </main>
   );
 }
 
