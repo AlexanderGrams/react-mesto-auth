@@ -14,6 +14,9 @@
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);
 
+/* стили main */
+@import url(./blocks/main/main.css);
+
 /* стили profile */
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/profile/__avatar/profile__avatar.css);
@@ -67,6 +70,18 @@
 @import url(./blocks/popup/__item/_type/popup__item_type_error.css);
 @import url(./blocks/popup/_animation/popup_animation.css);
 
+/* стили authorization */
+@import url(./blocks/authorization/authorization.css);
+@import url(./blocks/authorization/__title/authorization__title.css);
+@import url(./blocks/authorization/__form-admin/authorization__form-admin.css);
+@import url(./blocks/authorization/__inputs/authorization__inputs.css);
+@import url(./blocks/authorization/__item/authorization__item.css);
+@import url(./blocks/authorization/__item/_tupe/authorization__item_tupe_error.css);
+@import url(./blocks/authorization/__text-error/authorization__text-error.css);
+@import url(./blocks/authorization/__button/authorization__button.css);
+@import url(./blocks/authorization/__button/_disabled/authorization__button_disabled.css);
+@import url(./blocks/authorization/__link/authorization__link.css);
+
 /* стили загрузки главного экрана */
 @import url(./blocks/loading-data/loading-data.css);
 @import url(./blocks/loading-data/__img/loading-data__img.css);
@@ -74,3 +89,4 @@
 /* стили загрузки кнопок */
 @import url(./blocks/loading-btn/loading-btn.css);
 @import url(./blocks/loading-btn/__img/loading-btn__img.css);
+@import url(./blocks/loading-btn/_theme/loading-btn_theme_black.css);
