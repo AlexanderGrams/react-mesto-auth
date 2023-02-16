@@ -14,6 +14,7 @@ import loading from "../images/loading.gif";
 import DeleteCardQuestionPopup from './DeleteCardQuestionPopup/DeleteCardQuestionPopup';
 import Register from "./Register/Register"
 import Login from "./Login/Login"
+import ProtectedRouteElement from "./ProtectedRoute/ProtectedRoute"
 
 function App() {
   //состояние попапа аватара
@@ -34,6 +35,8 @@ function App() {
   const [loadingBoolean, setLoadingBoolean] = useState(false);
 
   const [cardToBeDeleted, setCardToBeDeleted] = useState({});
+  //авторизация пользователя
+  const [loggedIn, isloggedIn] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -162,11 +165,24 @@ function App() {
         <CurrentCardContext.Provider value={currentCards}>
           <Header />
           <Routes>
-            <Route path="/" element={
+            {/* <Route path="/" element={
               <Main onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
-            }/>
+            }/> */}
             <Route path="/sign-up" element={<Register />}/>
             <Route path="/sign-in" element={<Login />}/>
+            <Route path="/" element={
+              <ProtectedRouteElement
+                  component={Main} loggedIn={loggedIn} onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}
+                  // loggedIn={loggedIn}
+                  // onEditAvatar={handleEditAvatarClick}
+                  // onEditProfile={handleEditProfileClick}
+                  // onAddPlace={handleAddPlaceClick}
+                  // onCardClick={handleCardClick}
+                  // cards={cards}
+                  // onClickCardDelete={handleConfimCardDelete}
+                  // onCardLike={handleCardLike}
+                />
+            }/>
           </Routes>
           {/* {loadingBoolean ?
             <Main onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
