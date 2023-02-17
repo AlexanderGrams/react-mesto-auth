@@ -15,6 +15,7 @@ import DeleteCardQuestionPopup from './DeleteCardQuestionPopup/DeleteCardQuestio
 import Register from "./Register/Register"
 import Login from "./Login/Login"
 import ProtectedRouteElement from "./ProtectedRoute/ProtectedRoute"
+import InfoTooltip from './InfoTooltip/InfoTooltip';
 
 function App() {
   //состояние попапа аватара
@@ -27,6 +28,8 @@ function App() {
   const [isDeleteCardQuestionPopupOpen, setIsDeleteCardQuestionPopupOpen] = useState(false);
   //состояние попапа полноразмерной картинки
   const [selectedCard, setSelectedCard] = useState({});
+  //состояние попапа ответа регистрации
+  const [isOpenInfoTooltip, setOpenInfoTooltip] = useState(false);
   //данные пользователя
   const [currentUser, setCurrentUser] = useState({});
   //данные карточек
@@ -36,7 +39,12 @@ function App() {
 
   const [cardToBeDeleted, setCardToBeDeleted] = useState({});
   //авторизация пользователя
-  const [loggedIn, isloggedIn] = useState(false);
+  const [loggedIn, isloggedIn] = useState(true);
+  //состояние регистрации
+  const [registerResponse, isregisterResponse]  = useState({
+    status: false,
+    text: "",
+  });
 
   useEffect(() => {
     Promise.all([
@@ -157,13 +165,14 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsDeleteCardQuestionPopupOpen(false);
     setSelectedCard({});
+    setOpenInfoTooltip(false)
   };
 
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
         <CurrentCardContext.Provider value={currentCards}>
-          <Header />
+          <Header userEmail="cawa.cerber@gmail.com"/>
           <Routes>
             {/* <Route path="/" element={
               <Main onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
@@ -197,6 +206,7 @@ function App() {
           <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
           <DeleteCardQuestionPopup onDeleteCard={deleteCard} card={cardToBeDeleted} isOpen={isDeleteCardQuestionPopupOpen} onClose={closeAllPopups}/>
           <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+          <InfoTooltip isOpen={isOpenInfoTooltip} onClose={closeAllPopups} registerResponse={registerResponse}/>
         </CurrentCardContext.Provider>
       </CurrentUserContext.Provider>
     </div>
