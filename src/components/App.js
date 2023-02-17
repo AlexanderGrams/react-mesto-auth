@@ -16,7 +16,7 @@ import Register from "./Register/Register"
 import Login from "./Login/Login"
 import ProtectedRouteElement from "./ProtectedRoute/ProtectedRoute"
 import InfoTooltip from './InfoTooltip/InfoTooltip';
-import {getContent} from "../utils/auth"
+import { getContent, authorize, register } from "../utils/auth"
 
 function App() {
   //состояние попапа аватара
@@ -50,6 +50,61 @@ function App() {
   const [userEmail, setUserEmail] = useState("");
 
   const navigate = useNavigate();
+
+  function handleLogin(values, resetForm, setButtonLoading) {
+    setLoadingBoolean(false);
+
+    const {emailUser, password} = values
+    authorize(emailUser, password)
+      .then((res)=>{
+        localStorage.setItem("jwt", res.token);
+        setLoggedIn(true);
+        navigate('/', {replace: true})
+        setUserEmail(emailUser)
+      })
+      .catch((res) => {
+        if(res === 'Ошибка: 401'){
+          setMessage({
+            status: false,
+            text: "Аккаунт не зарегистрирован",
+          });
+        }else{
+          setMessage({
+            status: false,
+            text: res,
+          });
+        }
+        setLoadingBoolean(true);
+        setOpenInfoTooltip(true);
+      })
+      .finally(()=>{
+        resetForm()
+        setButtonLoading(false)
+      })
+  }
+
+  function handleRegister(values, resetForm, setButtonLoading){
+    const {emailUser, password} = values
+    register(emailUser, password)
+      .then(()=>{
+        setMessage({
+          status: true,
+          text: "Вы успешно зарегистрировались!",
+        });
+        navigate('/sign-in', {replace: true})
+      })
+      .catch(() => {
+        setMessage({
+          status: false,
+          text: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+      })
+      .finally(()=>{
+        resetForm()
+        setButtonLoading(false)
+        setOpenInfoTooltip(true)
+      })
+  }
 
   useEffect(()=>{
     tokenCheck();
@@ -211,8 +266,8 @@ function App() {
           <Header userEmail={userEmail} signOut={signOut} />
           {loadingBoolean ?
             <Routes>
-              <Route path="/sign-up" element={<Register setMessage={setMessage} setOpenInfoTooltip={setOpenInfoTooltip}/>}/>
-              <Route path="/sign-in" element={<Login setLoggedIn={setLoggedIn} setMessage={setMessage} setUserEmail={setUserEmail} setLoadingBoolean={setLoadingBoolean}/>}/>
+              <Route path="/sign-up" element={<Register onRegister={handleRegister} setMessage={setMessage} setOpenInfoTooltip={setOpenInfoTooltip}/>}/>
+              <Route path="/sign-in" element={<Login onLogin={handleLogin}/>}/>
               <Route path="/" element={
                 <ProtectedRouteElement component={Main} loggedIn={loggedIn} onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
               }/>
