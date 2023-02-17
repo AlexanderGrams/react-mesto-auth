@@ -1,42 +1,12 @@
-import {  useNavigate } from 'react-router-dom';
 import LoginAndRegisterForm from "../LoginAndRegisterForm/LoginAndRegisterForm";
 import { useFormAndValidation } from "../../hooks/useFormAndValidation";
-import {authorize} from "../../utils/auth";
 
-function Login({setLoggedIn, setMessage, setUserEmail, setLoadingBoolean}) {
+function Login({onLogin}) {
   const {values, handleChange, resetForm, errors, isValid} = useFormAndValidation()
-
-  const navigate = useNavigate();
 
   function handleSubmit(e, setButtonLoading) {
     e.preventDefault();
-    setLoadingBoolean(false);
-
-    const {emailUser, password} = values
-    authorize(emailUser, password)
-      .then((res)=>{
-        localStorage.setItem("jwt", res.token);
-        setLoggedIn(true);
-        navigate('/', {replace: true})
-        setUserEmail(emailUser)
-      })
-      .catch((res) => {
-        if(res === 'Ошибка: 401'){
-          setMessage({
-            status: false,
-            text: "Аккаунт не зарегистрирован",
-          });
-        }else{
-          setMessage({
-            status: false,
-            text: res,
-          });
-        }
-      })
-      .finally(()=>{
-        resetForm()
-        setButtonLoading(false)
-      })
+    onLogin(values, resetForm, setButtonLoading);
   }
 
   return (
