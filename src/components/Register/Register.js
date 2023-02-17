@@ -1,20 +1,36 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoginAndRegisterForm from "../LoginAndRegisterForm/LoginAndRegisterForm";
 import { useFormAndValidation } from "../../hooks/useFormAndValidation";
+import {register} from "../../utils/auth";
 
-function Register() {
+function Register({setMessage, setOpenInfoTooltip}) {
+  const {values, resetForm, handleChange, errors, isValid} = useFormAndValidation();
 
-  const {values, handleChange, errors, isValid} = useFormAndValidation()
+  const navigate = useNavigate();
 
   function handleSubmit(e, setButtonLoading) {
     e.preventDefault();
 
-    // // Передаём значения управляемых компонентов во внешний обработчик
-    // onUpdateUser({
-    //   nameUser: values.nameUser,
-    //   activity: values.activity,
-    //   resetForm: resetForm,
-    // }, setButtonLoading);
+    const {emailUser, password} = values
+    register(emailUser, password)
+      .then(()=>{
+        setMessage({
+          status: true,
+          text: "Вы успешно зарегистрировались!",
+        });
+        navigate('/sign-in', {replace: true})
+      })
+      .catch(() => {
+        setMessage({
+          status: false,
+          text: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+      })
+      .finally(()=>{
+        resetForm()
+        setButtonLoading(false)
+        setOpenInfoTooltip(true)
+      })
   }
 
   return (
