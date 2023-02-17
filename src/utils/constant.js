@@ -5,3 +5,5 @@ export const validationConfig = {
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__item_type_error',
 };
+
+export const BASE_URL = 'https://auth.nomoreparties.co';

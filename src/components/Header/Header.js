@@ -3,12 +3,21 @@ import {Route, Link, Routes } from 'react-router-dom';
 import { useState } from "react"
 
 function Header({userEmail, signOut, openPopupBurger}){
-
   const [isActiveBurger, setIsActiveBurger] = useState(false);
 
   function openPopupBurger(){
     setIsActiveBurger(!isActiveBurger)
   }
+
+  //закрытие меню при увиличении размера экрана
+  function handleResize(){
+    const windowInnerWidth = window.innerWidth
+    if(windowInnerWidth >= 560){
+      setIsActiveBurger(false)
+    }
+  }
+
+  window.addEventListener('resize', handleResize);
 
   return (
     <header className={isActiveBurger ? "header header_type_active" : "header"}>

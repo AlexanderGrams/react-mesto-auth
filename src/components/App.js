@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Header from "./Header/Header"
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer"
@@ -16,6 +16,7 @@ import Register from "./Register/Register"
 import Login from "./Login/Login"
 import ProtectedRouteElement from "./ProtectedRoute/ProtectedRoute"
 import InfoTooltip from './InfoTooltip/InfoTooltip';
+import {getContent} from "../utils/auth"
 
 function App() {
   //состояние попапа аватара
@@ -34,34 +35,62 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   //данные карточек
   const [currentCards, setCurrentCards] = useState([]);
-  //загрузка страницы
+  //анимация загрузки страницы
   const [loadingBoolean, setLoadingBoolean] = useState(false);
 
   const [cardToBeDeleted, setCardToBeDeleted] = useState({});
   //авторизация пользователя
-  const [loggedIn, isloggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   //состояние регистрации
-  const [registerResponse, isregisterResponse]  = useState({
+  const [message, setMessage] = useState({
     status: false,
     text: "",
-  });
+  })
+  //email авторизированного пользователя
+  const [userEmail, setUserEmail] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    tokenCheck();
+  }, [])
+
+  function tokenCheck(){
+    const jwt = localStorage.getItem('jwt');
+    if(jwt){
+      getContent(jwt)
+        .then((res) => {
+          setLoggedIn(true);
+          setUserEmail(res.data.email);
+          navigate("/", {replace: true});
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoadingBoolean(true);
+        })
+    }else{
+      setLoadingBoolean(true);
+    }
+  }
 
   useEffect(() => {
-    Promise.all([
-      api.getInfoUser(),
-      api.getInitialCards()
-    ])
-      .then(([info, initialCards]) => {
-        setCurrentUser(info);
-        setCurrentCards(initialCards);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(()=>{
-        setLoadingBoolean(true);
-      });
-  }, [])
+    if(loggedIn){
+      Promise.all([
+        api.getInfoUser(),
+        api.getInitialCards()
+      ])
+        .then(([info, initialCards]) => {
+          setCurrentUser(info);
+          setCurrentCards(initialCards);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(()=>{
+          setLoadingBoolean(true);
+        });
+    }
+  }, [loggedIn])
 
   function handleCardLike(card) {
     //проверяем, есть ли лайк на карточке
@@ -168,45 +197,38 @@ function App() {
     setOpenInfoTooltip(false)
   };
 
+  function signOut() {
+    localStorage.removeItem('jwt');
+    navigate('/sign-in');
+    setLoggedIn(false);
+    setUserEmail('');
+  }
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
         <CurrentCardContext.Provider value={currentCards}>
-          <Header userEmail="cawa.cerber@gmail.com"/>
-          <Routes>
-            {/* <Route path="/" element={
-              <Main onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
-            }/> */}
-            <Route path="/sign-up" element={<Register />}/>
-            <Route path="/sign-in" element={<Login />}/>
-            <Route path="/" element={
-              <ProtectedRouteElement
-                  component={Main} loggedIn={loggedIn} onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}
-                  // loggedIn={loggedIn}
-                  // onEditAvatar={handleEditAvatarClick}
-                  // onEditProfile={handleEditProfileClick}
-                  // onAddPlace={handleAddPlaceClick}
-                  // onCardClick={handleCardClick}
-                  // cards={cards}
-                  // onClickCardDelete={handleConfimCardDelete}
-                  // onCardLike={handleCardLike}
-                />
-            }/>
-          </Routes>
-          {/* {loadingBoolean ?
-            <Main onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
+          <Header userEmail={userEmail} signOut={signOut} />
+          {loadingBoolean ?
+            <Routes>
+              <Route path="/sign-up" element={<Register setMessage={setMessage} setOpenInfoTooltip={setOpenInfoTooltip}/>}/>
+              <Route path="/sign-in" element={<Login setLoggedIn={setLoggedIn} setMessage={setMessage} setUserEmail={setUserEmail} setLoadingBoolean={setLoadingBoolean}/>}/>
+              <Route path="/" element={
+                <ProtectedRouteElement component={Main} loggedIn={loggedIn} onCardLike={handleCardLike} onCardDelet={handleCardDeletClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
+              }/>
+            </Routes>
             :
             <div className='loading-data'>
               <img className='loading-data__img' src={loading} alt='анимация загрузки'/>
             </div>
-          } */}
+          }
           <Footer />
           <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
           <AddPlacePopup onAddCrad={handleAddCrad} isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
           <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
           <DeleteCardQuestionPopup onDeleteCard={deleteCard} card={cardToBeDeleted} isOpen={isDeleteCardQuestionPopupOpen} onClose={closeAllPopups}/>
           <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
-          <InfoTooltip isOpen={isOpenInfoTooltip} onClose={closeAllPopups} registerResponse={registerResponse}/>
+          <InfoTooltip isOpen={isOpenInfoTooltip} onClose={closeAllPopups} message={message}/>
         </CurrentCardContext.Provider>
       </CurrentUserContext.Provider>
     </div>
