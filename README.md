@@ -13,7 +13,7 @@
 
 <br />
 <div align="end">
-  <a href="https://alexandergrams.github.io/mesto-react/">
+  <a href="https://alexandergrams.github.io/react-mesto-auth/">
     <img src="./src/images/logo_them-withe.svg" alt="Logo" width="400" height="100">
   </a>
 
@@ -54,12 +54,12 @@
 
 Данный проект - это второй этап создания социальной сети с возможностью размещения изображений. Работа представляет собой портирование на "Реакт", созданного ранее <a href="https://github.com/AlexanderGrams/mesto">адаптивного одностраничного сайта</a> с профилем пользователя и фотокарточками, изначально написанного на нативных технологиях: HTML5, CSS3 и JavaScript. Так же замена объектно-ориентированной парадигмы программирования на функционально-ориентированную.
 
-<a href="https://alexandergrams.github.io/mesto-react/">![start-page-img](./src/images/readme-img.png)</a>
+<a href="https://alexandergrams.github.io/react-mesto-auth/">![start-page-img](./src/images/readme-img.png)</a>
 
 
 
 ### Функционал
-
+* Авторизация пользователя и возможность регистрации
 * Адаптивный интерфейс
 * Обмен данными с сервером
 * Открытие и закрытие модальных окон (по кнопке, оверлею и клавише "Escape")
@@ -132,31 +132,31 @@
 * Редактировать информацию о себе и изменять свой аватар
 <br>
 
-<a href="https://alexandergrams.github.io/mesto-react/">![start-page-img](./src/images/readme-img-edit-profile.png)</a>
+<a href="https://alexandergrams.github.io/react-mesto-auth/">![start-page-img](./src/images/readme-img-edit-profile.png)</a>
 <br>
 
 * Добавлять фото карточки с подписями, для этого необходимо придумать подпись и вставить ссылку на изображение
 <br>
 
-<a href="https://alexandergrams.github.io/mesto-react/">![start-page-img](./src/images/readme-img-add-card.png)</a>
+<a href="https://alexandergrams.github.io/react-mesto-auth/">![start-page-img](./src/images/readme-img-add-card.png)</a>
 <br>
 
 * Оставлять реакцию на свои и чужие фотокарточки
 <br>
 
-<a href="https://alexandergrams.github.io/mesto-react/">![start-page-img](./src/images/readme-img-like-card.png)</a>
+<a href="https://alexandergrams.github.io/react-mesto-auth/">![start-page-img](./src/images/readme-img-like-card.png)</a>
 <br>
 
 * Открывать изображения из фотокарточек в полном разрешении изображения
 <br>
 
-<a href="https://alexandergrams.github.io/mesto-react/">![start-page-img](./src/images/readme-img-popup.png)</a>
+<a href="https://alexandergrams.github.io/react-mesto-auth/">![start-page-img](./src/images/readme-img-popup.png)</a>
 <br>
 
 * Удалять карточки нажав корзину и далее подтвердив действие
 <br>
 
-<a href="https://alexandergrams.github.io/mesto-react/">![start-page-img](./src/images/readme-img-delet-card.png)</a>
+<a href="https://alexandergrams.github.io/react-mesto-auth/">![start-page-img](./src/images/readme-img-delet-card.png)</a>
 
 <p align="right">(<a href="#readme-top">вернуться на верх</a>)</p>
 
@@ -165,7 +165,6 @@
 <!-- Plans for completion -->
 ## Планы по доработке
 
-* добавить авторизацию пользователя и возможность регистрации
 * добавление периодического автоматического обновления галереи карточек
 * добавление функции сабмита форм нажатием на клавишу "Enter" (в настоящий момент работает только в случае клика пользователем по полю формы)
 * добавить ссылочную навигацию и страницу "404"
@@ -198,7 +197,7 @@
 
 >Ссылка на проект: [https://github.com/AlexanderGrams/mesto-react](https://github.com/AlexanderGrams/mesto-react)
 
->Ссылка на Github Pages: [https://alexandergrams.github.io/mesto-react/](https://alexandergrams.github.io/mesto-react/)
+>Ссылка на Github Pages: [https://alexandergrams.github.io/react-mesto-auth/](https://alexandergrams.github.io/react-mesto-auth/)
 
 <p align="right">(<a href="#readme-top">вернуться на верх</a>)</p>
 
