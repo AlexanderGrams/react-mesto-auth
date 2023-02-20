@@ -9,16 +9,6 @@ function Header({userEmail, signOut, openPopupBurger}){
     setIsActiveBurger(!isActiveBurger)
   }
 
-  //закрытие меню при увиличении размера экрана
-  function handleResize(){
-    const windowInnerWidth = window.innerWidth
-    if(windowInnerWidth >= 560){
-      setIsActiveBurger(false)
-    }
-  }
-
-  window.addEventListener('resize', handleResize);
-
   return (
     <header className={isActiveBurger ? "header header_type_active" : "header"}>
       <img className="header__logo" src={logo} alt="логотип Место" />
@@ -29,7 +19,7 @@ function Header({userEmail, signOut, openPopupBurger}){
           <Link to={"/sign-up"} className="header__navLink">Регистрация</Link>}/>
         <Route path="/" element={
           <>
-          <div className={isActiveBurger ? "header__userElements_tupe_active" : "header__userElements"}>
+          <div className={isActiveBurger ? "header__userElements header__userElements_tupe_active" : "header__userElements"}>
             <p className='header__email'>{userEmail}</p>
             <button onClick={signOut} className="header__logout">Выйти</button>
           </div>
